@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Dashboard</title>
+</head>
+<body>
+
+    <h1>Weather Dashboard 🌦️</h1>
+
+    <p>Welcome to our Weather Dashboard Project.</p>
+    <form method="GET">
+    <input type="text" name ="city" placeholder="Enter City Name">
+    <button type="submit">Search</button>
+    </form>
+    {% if city %}
+    <h2>You searched for: {{ city }}</h2>
+    {% endif %}
+    {% if weather %}
+
+    <h2>{{ weather.city }}, {{ weather.country }}</h2>
+
+    <p>🌡 Temperature: {{ weather.temperature }} °C</p>
+
+    <p>🤗 Feels Like: {{ weather.feels_like }} °C</p>
+
+    <p>📉 Min Temperature: {{ weather.min_temp }} °C</p>
+
+    <p>📈 Max Temperature: {{ weather.max_temp }} °C</p>
+
+    <p>☁ Weather: {{ weather.description }}</p>
+
+    <p>💧 Humidity: {{ weather.humidity }}%</p>
+
+    <p>🌬 Pressure: {{ weather.pressure }} hPa</p>
+
+    <p>👀 Visibility: {{ weather.visibility }} km</p>
+
+    <p>💨 Wind Speed: {{ weather.wind }} m/s</p>
+
+    {% elif city %}
+
+    <h2>City not found!</h2>
+
+    {% endif %}
+
+</body>
+</html>
