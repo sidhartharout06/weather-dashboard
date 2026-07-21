@@ -106,3 +106,43 @@ def get_weather_by_coordinates(lat, lon):
             return format_weather_data(data)
 
     return None
+from datetime import datetime
+
+def get_forecast(city):
+    url = (
+        f"https://api.openweathermap.org/data/2.5/forecast"
+        f"?q={city}&appid={API_KEY}&units=metric"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return None
+
+    data = response.json()
+
+    forecast = []
+
+    for item in data["list"]:
+
+        if "12:00:00" in item["dt_txt"]:
+
+            forecast.append({
+                "day": datetime.strptime(
+                    item["dt_txt"],
+                    "%Y-%m-%d %H:%M:%S"
+                ).strftime("%a"),
+
+                "date": datetime.strptime(
+                    item["dt_txt"],
+                    "%Y-%m-%d %H:%M:%S"
+                ).strftime("%d %b"),
+
+                "temp": round(item["main"]["temp"]),
+
+                "description": item["weather"][0]["description"].title(),
+
+                "icon": item["weather"][0]["icon"],
+            })
+
+    return forecast

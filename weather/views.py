@@ -1,18 +1,22 @@
 from django.shortcuts import render
-from .services import get_weather, get_weather_by_coordinates
+from .services import get_weather, get_weather_by_coordinates, get_forecast
 
 
 def home(request):
     city = request.GET.get("city", "").strip()
 
     weather = None
+    forecast = None
 
     if city:
         weather = get_weather(city)
+        forecast = get_forecast(city)
+        print(forecast)
 
     context = {
         "city": city,
         "weather": weather,
+        "forecast": forecast,
     }
 
     return render(request, "weather/home.html", context)

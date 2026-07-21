@@ -90,6 +90,37 @@
 
         </div>
 
+        {% if forecast %}
+        <div class="forecast-section">
+            <h2>5-Day Forecast</h2>
+
+            <div class="forecast-container">
+
+                {% for day in forecast %}
+                <div class="forecast-card">
+
+                    <h3>{{ day.day }}</h3>
+
+                    <p class="forecast-date">{{ day.date }}</p>
+
+                    <hr>
+
+                    <img
+                        src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png"
+                        alt="{{ day.description }}"
+                    >
+
+                    <h4 class="forecast-temp">{{ day.temp }}°C</h4>
+
+                    <p class="forecast-desc">{{ day.description }}</p>
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% endif %}
+
         {% elif city %}
 
         <h2>City not found!</h2>
