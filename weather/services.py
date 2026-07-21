@@ -7,6 +7,13 @@ load_dotenv()
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
+
+
+def get_wind_direction(degree):
+    directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    index = round(degree / 45) % 8
+    return directions[index]
+
 def get_weather(city):
     url = (
         f"https://api.openweathermap.org/data/2.5/weather"
@@ -34,6 +41,11 @@ def get_weather(city):
                 "pressure": data["main"]["pressure"],
                 "visibility": round(data["visibility"] / 1000),
                 "wind": data["wind"]["speed"],
+
+                "wind_direction": get_wind_direction(
+                    data["wind"].get("deg", 0)
+                ),
+
                 "date": city_time.strftime("%d %B %Y"),
                 "time": city_time.strftime("%I:%M %p"),
 
