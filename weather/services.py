@@ -1,7 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 load_dotenv()
 
@@ -17,6 +17,8 @@ def get_weather(city):
 
     if response.status_code == 200:
         data = response.json()
+        city_timezone = timezone(timedelta(seconds=data["timezone"]))
+        city_time = datetime.now(city_timezone)
 
         if data.get("cod") == 200:
             return {
@@ -32,9 +34,18 @@ def get_weather(city):
                 "pressure": data["main"]["pressure"],
                 "visibility": round(data["visibility"] / 1000),
                 "wind": data["wind"]["speed"],
-                "icon": data["weather"][0]["icon"],
-                "date": datetime.now().strftime("%d %B %Y"),
-                "time": datetime.now().strftime("%I %M %p"),
+                "date": city_time.strftime("%d %B %Y"),
+                "time": city_time.strftime("%I:%M %p"),
+
+                "sunrise": datetime.fromtimestamp(
+                    data["sys"]["sunrise"],
+                    tz=city_timezone
+                ).strftime("%I:%M %p"),
+
+                "sunset": datetime.fromtimestamp(
+                    data["sys"]["sunset"],
+                    tz=city_timezone
+                ).strftime("%I:%M %p"),
             }
 
     return None
