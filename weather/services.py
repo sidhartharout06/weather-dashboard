@@ -1,6 +1,7 @@
 import requests
 from dotenv import load_dotenv
 import os
+from datetime import datetime
 
 load_dotenv()
 
@@ -32,6 +33,8 @@ def get_weather(city):
                 "visibility": round(data["visibility"] / 1000),
                 "wind": data["wind"]["speed"],
                 "icon": data["weather"][0]["icon"],
+                "date": datetime.now().strftime("%d %B %Y"),
+                "time": datetime.now().strftime("%I %M %p"),
             }
 
     return None

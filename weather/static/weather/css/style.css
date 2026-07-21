@@ -145,6 +145,13 @@ hr{
     margin:0;
 }
 
+.date-time{
+    color:#666;
+    font-size:16px;
+    margin-top:-10px;
+    margin-bottom:20px;
+}
+
 @media(max-width:700px){
 
     .container{
