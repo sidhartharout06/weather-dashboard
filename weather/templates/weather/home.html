@@ -1,7 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'weather/css/style.css' %}">
     <title>Weather Dashboard</title>
 </head>
@@ -12,29 +14,39 @@
     <h1>Weather Dashboard 🌦️</h1>
 
     <p>Welcome to our Weather Dashboard Project.</p>
-    <form method="GET">
-    <input type="text" name ="city" placeholder="Enter City Name">
+    <form method="GET" class="search-form">
+    <input type="text" name ="city" placeholder="Enter City Name" required>
     <button type="submit">Search</button>
     </form>
     
     {% if weather %}
+    <div class="weather-card">
+    
+
+    <div class="city-header">
 
     <h2>{{ weather.city }}, {{ weather.country }}</h2>
     <img
     src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
-    alt="Weather Icon"
-    >
+    alt="Weather Icon">
+    </div>
 
 
-    <p>🌡 Temperature: {{ weather.temperature }} °C</p>
+    <p class="temp">{{ weather.temperature }} °C</p>
+    <p class="description">{{ weather.description }}</p>
+
+    <hr>
+
+    <h3>Weather Details</h3>
+
+    <div class="details">
+
 
     <p>🤗 Feels Like: {{ weather.feels_like }} °C</p>
 
     <p>📉 Min Temperature: {{ weather.min_temp }} °C</p>
 
     <p>📈 Max Temperature: {{ weather.max_temp }} °C</p>
-
-    <p>☁ Weather: {{ weather.description }}</p>
 
     <p>💧 Humidity: {{ weather.humidity }}%</p>
 
@@ -44,9 +56,14 @@
 
     <p>💨 Wind Speed: {{ weather.wind }} m/s</p>
 
+    </div>
+
+    </div>
+
     {% elif city %}
 
     <h2>City not found!</h2>
+    
 
     {% endif %}
 

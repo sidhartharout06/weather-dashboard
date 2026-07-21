@@ -29,7 +29,7 @@ def get_weather(city):
                 "description": data["weather"][0]["description"].title(),
                 "humidity": data["main"]["humidity"],
                 "pressure": data["main"]["pressure"],
-                "visibility": data["visibility"] / 1000,
+                "visibility": round(data["visibility"] / 1000),
                 "wind": data["wind"]["speed"],
                 "icon": data["weather"][0]["icon"],
             }
