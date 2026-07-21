@@ -8,75 +8,93 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
-    <div class="container">
-    
 
-    <h1>Weather Dashboard 🌦️</h1>
-
-    <p>Welcome to our Weather Dashboard Project.</p>
-    <form method="GET" action="{% url 'home' %}" class="search-form">
-    <input type="text" name ="city" placeholder="Enter City Name" required>
-    <button type="submit">Search</button>
-    </form>
-     <button type="button" id="location-btn">
-        📍 Use My Location
-    </button>
-    
+    <div class="container"
     {% if weather %}
-    <div class="weather-card">
-    
-
-    <div class="city-header">
-
-    <h2>{{ weather.city }}, {{ weather.country }}</h2>
-    <img
-    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
-    alt="Weather Icon">
-    </div>
-        <p class="date-time">
-        📅 {{ weather.date }} &nbsp;&nbsp; 🕒 {{ weather.time }}
-    </p>
-
-
-    <p class="temp">{{ weather.temperature }} °C</p>
-    <p class="description">{{ weather.description }}</p>
-
-    <hr>
-
-    <h3>Weather Details</h3>
-
-    <div class="details">
-
-
-    <p>🤗 Feels Like: {{ weather.feels_like }} °C</p>
-
-    <p>📉 Min Temperature: {{ weather.min_temp }} °C</p>
-
-    <p>📈 Max Temperature: {{ weather.max_temp }} °C</p>
-
-    <p>💧 Humidity: {{ weather.humidity }}%</p>
-
-    <p>🌬 Pressure: {{ weather.pressure }} hPa</p>
-
-    <p>👀 Visibility: {{ weather.visibility }} km</p>
-
-    <p>💨 Wind Speed: {{ weather.wind }} m/s</p>
-    <p>🧭 Wind Direction: {{ weather.wind_direction }}</p>
-
-    <p>🌅 Sunrise: {{ weather.sunrise }}</p>
-
-    <p>🌇 Sunset: {{ weather.sunset }}</p>
-
-    </div>
-
-    </div>
-
-    {% elif city %}
-
-    <h2>City not found!</h2>
-    
-
+    style="--bg-image: url('{% static 'weather/images/' %}{{ weather.background }}');"
     {% endif %}
+    >
+
+        <h1>Weather Dashboard 🌦️</h1>
+
+        <p>Welcome to our Weather Dashboard Project.</p>
+
+        <form method="GET" action="{% url 'home' %}" class="search-form">
+            <input
+                type="text"
+                name="city"
+                value="{{ city }}"
+                placeholder="Enter City Name"
+                required
+            >
+            <button type="submit">Search</button>
+        </form>
+
+        <button type="button" id="location-btn">
+            📍 Use My Location
+        </button>
+
+        {% if weather %}
+
+        <div class="weather-card">
+
+            <div class="city-header">
+                <h2>{{ weather.city }}, {{ weather.country }}</h2>
+
+                <img
+                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+                    alt="Weather Icon">
+            </div>
+
+            <p class="date-time">
+                📅 {{ weather.date }}
+                &nbsp;&nbsp;
+                🕒 {{ weather.time }}
+            </p>
+
+            <p class="temp">
+                {{ weather.temperature }} °C
+            </p>
+
+            <p class="description">
+                {{ weather.description }}
+            </p>
+
+            <hr>
+
+            <h3>Weather Details</h3>
+
+            <div class="details">
+
+                <p>🤗 Feels Like: {{ weather.feels_like }} °C</p>
+
+                <p>📉 Min Temperature: {{ weather.min_temp }} °C</p>
+
+                <p>📈 Max Temperature: {{ weather.max_temp }} °C</p>
+
+                <p>💧 Humidity: {{ weather.humidity }}%</p>
+
+                <p>🌬 Pressure: {{ weather.pressure }} hPa</p>
+
+                <p>👀 Visibility: {{ weather.visibility }} km</p>
+
+                <p>💨 Wind Speed: {{ weather.wind }} m/s</p>
+
+                <p>🧭 Wind Direction: {{ weather.wind_direction }}</p>
+
+                <p>🌅 Sunrise: {{ weather.sunrise }}</p>
+
+                <p>🌇 Sunset: {{ weather.sunset }}</p>
+
+            </div>
+
+        </div>
+
+        {% elif city %}
+
+        <h2>City not found!</h2>
+
+        {% endif %}
 
     </div>
 

@@ -19,8 +19,34 @@ def format_weather_data(data):
     city_timezone = timezone(timedelta(seconds=data["timezone"]))
     city_time = datetime.now(city_timezone)
 
+    weather = data["weather"][0]["main"]
+    icon = data["weather"][0]["icon"]
+
+    if weather == "Clear":
+        background = "night_sky.jpeg" if icon.endswith("n") else "sunny.jpeg"
+
+    elif weather == "Clouds":
+        background = "cloudy.jpeg"
+
+    elif weather in ["Rain", "Drizzle"]:
+        background = "rainy.jpeg"
+
+    elif weather == "Thunderstorm":
+        background = "thunderstorm.jpeg"
+
+    elif weather == "Snow":
+        background = "snow.jpeg"
+
+    elif weather in ["Mist", "Fog", "Haze", "Smoke", "Dust"]:
+        background = "fog.jpeg"
+
+    else:
+        background = "sunny.jpeg"
+
     return {
-        "icon": data["weather"][0]["icon"],
+        "icon": icon,
+        "background": background,
+        "main_weather": weather,
         "city": data["name"],
         "country": data["sys"]["country"],
         "temperature": round(data["main"]["temp"]),
@@ -46,6 +72,7 @@ def format_weather_data(data):
             tz=city_timezone
         ).strftime("%I:%M %p"),
     }
+    
 def get_weather(city):
     url = (
         f"https://api.openweathermap.org/data/2.5/weather"

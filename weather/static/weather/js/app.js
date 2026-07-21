@@ -36,12 +36,14 @@ window.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const currentCity = params.get("city");
 
-    if (!currentCity && lastCity) {
+    const isHomePage = window.location.pathname === "/";
+
+    if (isHomePage && !currentCity && lastCity) {
         window.location.href = `/?city=${encodeURIComponent(lastCity)}`;
         return;
     }
 
-    if (currentCity) {
+    if (cityInput && currentCity) {
         cityInput.value = currentCity;
     }
 

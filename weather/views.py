@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from .services import get_weather, get_weather_by_coordinates
-from django.http import HttpResponse
-
 
 
 def home(request):
@@ -19,14 +17,18 @@ def home(request):
 
     return render(request, "weather/home.html", context)
 
+
 def location_weather(request):
     lat = request.GET.get("lat")
     lon = request.GET.get("lon")
 
-    weather = get_weather_by_coordinates(lat, lon)
+    weather = None
+
+    if lat and lon:
+        weather = get_weather_by_coordinates(lat, lon)
 
     context = {
-        "city": "",
+        "city": weather["city"] if weather else "",
         "weather": weather,
     }
 
