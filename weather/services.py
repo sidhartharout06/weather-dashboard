@@ -19,13 +19,14 @@ def get_weather(city):
 
         if data.get("cod") == 200:
             return {
+                "icon": data["weather"][0]["icon"],
                 "city": data["name"],
                 "country": data["sys"]["country"],
-                "temperature": data["main"]["temp"],
-                "feels_like": data["main"]["feels_like"],
-                "min_temp": data["main"]["temp_min"],
-                "max_temp": data["main"]["temp_max"],
-                "description": data["weather"][0]["description"],
+                "temperature": round(data["main"]["temp"]),
+                "feels_like": round(data["main"]["feels_like"]),
+                "min_temp": round(data["main"]["temp_min"]),
+                "max_temp": round(data["main"]["temp_max"]),
+                "description": data["weather"][0]["description"].title(),
                 "humidity": data["main"]["humidity"],
                 "pressure": data["main"]["pressure"],
                 "visibility": data["visibility"] / 1000,

@@ -1,9 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'weather/css/style.css' %}">
     <title>Weather Dashboard</title>
 </head>
 <body>
+    <div class="container">
+    
 
     <h1>Weather Dashboard 🌦️</h1>
 
@@ -12,12 +16,15 @@
     <input type="text" name ="city" placeholder="Enter City Name">
     <button type="submit">Search</button>
     </form>
-    {% if city %}
-    <h2>You searched for: {{ city }}</h2>
-    {% endif %}
+    
     {% if weather %}
 
     <h2>{{ weather.city }}, {{ weather.country }}</h2>
+    <img
+    src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png"
+    alt="Weather Icon"
+    >
+
 
     <p>🌡 Temperature: {{ weather.temperature }} °C</p>
 
@@ -42,6 +49,8 @@
     <h2>City not found!</h2>
 
     {% endif %}
+
+    </div>
 
 </body>
 </html>
