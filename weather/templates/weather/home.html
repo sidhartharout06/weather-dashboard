@@ -14,7 +14,7 @@
     <h1>Weather Dashboard 🌦️</h1>
 
     <p>Welcome to our Weather Dashboard Project.</p>
-    <form method="GET" class="search-form">
+    <form method="GET" action="{% url 'home' %}" class="search-form">
     <input type="text" name ="city" placeholder="Enter City Name" required>
     <button type="submit">Search</button>
     </form>
@@ -81,6 +81,6 @@
     </div>
 
     <script src="{% static 'weather/js/app.js' %}"></script>
-    
+
 </body>
 </html>

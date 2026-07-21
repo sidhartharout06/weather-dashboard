@@ -20,3 +20,29 @@ locationBtn.addEventListener("click", function () {
     }
 
 });
+
+
+const searchForm = document.querySelector("form");
+const cityInput = document.querySelector('input[name="city"]');
+
+searchForm.addEventListener("submit", function () {
+    localStorage.setItem("lastCity", cityInput.value);
+});
+
+window.addEventListener("DOMContentLoaded", function () {
+
+    const lastCity = localStorage.getItem("lastCity");
+
+    const params = new URLSearchParams(window.location.search);
+    const currentCity = params.get("city");
+
+    if (!currentCity && lastCity) {
+        window.location.href = `/?city=${encodeURIComponent(lastCity)}`;
+        return;
+    }
+
+    if (currentCity) {
+        cityInput.value = currentCity;
+    }
+
+});
