@@ -152,6 +152,24 @@ hr{
     margin-bottom:20px;
 }
 
+#location-btn{
+    margin-top:15px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#27ae60;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#location-btn:hover{
+    background:#219150;
+}
+
+
 @media(max-width:700px){
 
     .container{

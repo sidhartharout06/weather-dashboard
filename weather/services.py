@@ -14,6 +14,38 @@ def get_wind_direction(degree):
     index = round(degree / 45) % 8
     return directions[index]
 
+
+def format_weather_data(data):
+    city_timezone = timezone(timedelta(seconds=data["timezone"]))
+    city_time = datetime.now(city_timezone)
+
+    return {
+        "icon": data["weather"][0]["icon"],
+        "city": data["name"],
+        "country": data["sys"]["country"],
+        "temperature": round(data["main"]["temp"]),
+        "feels_like": round(data["main"]["feels_like"]),
+        "min_temp": round(data["main"]["temp_min"]),
+        "max_temp": round(data["main"]["temp_max"]),
+        "description": data["weather"][0]["description"].title(),
+        "humidity": data["main"]["humidity"],
+        "pressure": data["main"]["pressure"],
+        "visibility": round(data["visibility"] / 1000),
+        "wind": data["wind"]["speed"],
+        "wind_direction": get_wind_direction(
+            data["wind"].get("deg", 0)
+        ),
+        "date": city_time.strftime("%d %B %Y"),
+        "time": city_time.strftime("%I:%M %p"),
+        "sunrise": datetime.fromtimestamp(
+            data["sys"]["sunrise"],
+            tz=city_timezone
+        ).strftime("%I:%M %p"),
+        "sunset": datetime.fromtimestamp(
+            data["sys"]["sunset"],
+            tz=city_timezone
+        ).strftime("%I:%M %p"),
+    }
 def get_weather(city):
     url = (
         f"https://api.openweathermap.org/data/2.5/weather"
@@ -24,40 +56,26 @@ def get_weather(city):
 
     if response.status_code == 200:
         data = response.json()
-        city_timezone = timezone(timedelta(seconds=data["timezone"]))
-        city_time = datetime.now(city_timezone)
 
         if data.get("cod") == 200:
-            return {
-                "icon": data["weather"][0]["icon"],
-                "city": data["name"],
-                "country": data["sys"]["country"],
-                "temperature": round(data["main"]["temp"]),
-                "feels_like": round(data["main"]["feels_like"]),
-                "min_temp": round(data["main"]["temp_min"]),
-                "max_temp": round(data["main"]["temp_max"]),
-                "description": data["weather"][0]["description"].title(),
-                "humidity": data["main"]["humidity"],
-                "pressure": data["main"]["pressure"],
-                "visibility": round(data["visibility"] / 1000),
-                "wind": data["wind"]["speed"],
+            return format_weather_data(data)
 
-                "wind_direction": get_wind_direction(
-                    data["wind"].get("deg", 0)
-                ),
+    return None
 
-                "date": city_time.strftime("%d %B %Y"),
-                "time": city_time.strftime("%I:%M %p"),
 
-                "sunrise": datetime.fromtimestamp(
-                    data["sys"]["sunrise"],
-                    tz=city_timezone
-                ).strftime("%I:%M %p"),
 
-                "sunset": datetime.fromtimestamp(
-                    data["sys"]["sunset"],
-                    tz=city_timezone
-                ).strftime("%I:%M %p"),
-            }
+def get_weather_by_coordinates(lat, lon):
+    url = (
+        f"https://api.openweathermap.org/data/2.5/weather"
+        f"?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        if data.get("cod") == 200:
+            return format_weather_data(data)
 
     return None

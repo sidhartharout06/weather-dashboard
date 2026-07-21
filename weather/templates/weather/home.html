@@ -18,6 +18,9 @@
     <input type="text" name ="city" placeholder="Enter City Name" required>
     <button type="submit">Search</button>
     </form>
+     <button type="button" id="location-btn">
+        📍 Use My Location
+    </button>
     
     {% if weather %}
     <div class="weather-card">
@@ -59,7 +62,7 @@
 
     <p>💨 Wind Speed: {{ weather.wind }} m/s</p>
     <p>🧭 Wind Direction: {{ weather.wind_direction }}</p>
-    
+
     <p>🌅 Sunrise: {{ weather.sunrise }}</p>
 
     <p>🌇 Sunset: {{ weather.sunset }}</p>
@@ -77,5 +80,7 @@
 
     </div>
 
+    <script src="{% static 'weather/js/app.js' %}"></script>
+    
 </body>
 </html>
