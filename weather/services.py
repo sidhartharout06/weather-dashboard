@@ -2,6 +2,7 @@ import requests
 from dotenv import load_dotenv
 import os
 from datetime import datetime, timezone, timedelta
+from collections import defaultdict
 
 load_dotenv()
 
@@ -121,28 +122,110 @@ def get_forecast(city):
 
     data = response.json()
 
-    forecast = []
+    daily_forecast = defaultdict(list)
 
     for item in data["list"]:
 
-        if "12:00:00" in item["dt_txt"]:
+        date = item["dt_txt"].split(" ")[0]
 
-            forecast.append({
-                "day": datetime.strptime(
-                    item["dt_txt"],
-                    "%Y-%m-%d %H:%M:%S"
-                ).strftime("%a"),
+        daily_forecast[date].append(item)
 
-                "date": datetime.strptime(
-                    item["dt_txt"],
-                    "%Y-%m-%d %H:%M:%S"
-                ).strftime("%d %b"),
+    forecast = []
 
-                "temp": round(item["main"]["temp"]),
+    today = datetime.now().strftime("%Y-%m-%d")
 
-                "description": item["weather"][0]["description"].title(),
+    for date, items in daily_forecast.items():
 
-                "icon": item["weather"][0]["icon"],
-            })
+        if date == today:
+            continue
 
-    return forecast
+        high = max(item["main"]["temp_max"] for item in items)
+        low = min(item["main"]["temp_min"] for item in items)
+
+        noon_forecast = next(
+        (item for item in items if "12:00:00" in item["dt_txt"]),
+        items[0]
+    )
+
+        forecast.append({
+
+            "day": datetime.strptime(
+                date,
+                "%Y-%m-%d"
+            ).strftime("%a"),
+
+            "date": datetime.strptime(
+                date,
+                "%Y-%m-%d"
+            ).strftime("%d %b"),
+
+            "high": round(high),
+
+            "low": round(low),
+
+            "description": noon_forecast["weather"][0]["description"].title(),
+
+            "icon": noon_forecast["weather"][0]["icon"],
+
+        })
+
+    return forecast[:5]
+
+
+def get_forecast_by_coordinates(lat, lon):
+    url = (
+        f"https://api.openweathermap.org/data/2.5/forecast"
+        f"?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
+    )
+
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return None
+
+    data = response.json()
+
+    daily_forecast = defaultdict(list)
+
+    for item in data["list"]:
+        date = item["dt_txt"].split(" ")[0]
+        daily_forecast[date].append(item)
+
+    forecast = []
+
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    for date, items in daily_forecast.items():
+
+        if date == today:
+            continue
+
+        high = max(item["main"]["temp_max"] for item in items)
+        low = min(item["main"]["temp_min"] for item in items)
+
+        noon_forecast = next(
+            (item for item in items if "12:00:00" in item["dt_txt"]),
+            items[0]
+        )
+
+        forecast.append({
+            "day": datetime.strptime(
+                date,
+                "%Y-%m-%d"
+            ).strftime("%a"),
+
+            "date": datetime.strptime(
+                date,
+                "%Y-%m-%d"
+            ).strftime("%d %b"),
+
+            "high": round(high),
+
+            "low": round(low),
+
+            "description": noon_forecast["weather"][0]["description"].title(),
+
+            "icon": noon_forecast["weather"][0]["icon"],
+        })
+
+    return forecast[:5]

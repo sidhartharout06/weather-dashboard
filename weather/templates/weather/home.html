@@ -110,7 +110,9 @@
                         alt="{{ day.description }}"
                     >
 
-                    <h4 class="forecast-temp">{{ day.temp }}°C</h4>
+                    <h4 class="forecast-temp">↑ {{ day.high }}°C
+                                                <br>
+                                                ↓ {{ day.low }}°C</h4>
 
                     <p class="forecast-desc">{{ day.description }}</p>
 
